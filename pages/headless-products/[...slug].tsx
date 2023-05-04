@@ -18,7 +18,6 @@ function HeadlessProduct({pdp, header, footer } : any) {
                     content={header}
                   />
                   <BuilderContent
-                    key={pdp?.id}
                     modelName="product"
                     content={pdp}
                   >
@@ -98,19 +97,33 @@ function HeadlessProduct({pdp, header, footer } : any) {
   }
 
   export const getStaticProps = async(context : any) => {
-    const targeting = { urlPath: '_', device: '_' } as any;
-    const path = `/headless-products/${(context.params?.content as string[])?.join('/') || ''}`;
+    const targeting = { urlPath: '_', } as any;
+    const slug = context.params?.slug;
+    const path = `/headless-products/${(context.params?.slug as string[])?.join('/') || ''}`;
 
+    console.log('path ', path)
 
+    const url = encodeURI(`https://cdn.builder.io/api/v3/content/product?apiKey=900ba6c488b3475599deca93010086e9&query.data.slug=${slug}&limit=1`);
+
+    console.log('url ', url)
     const [pdp, header, footer] = await Promise.all([
-      builder.get('product', {userAttributes: { ...targeting, urlPath: path }}).promise(),
+      // builder.get('product', {
+      //   // userAttributes: { urlPath: path, },
+      //   query: {
+      //     data: {
+      //       slug
+      //     }
+      //   }
+      // }).promise(),
+      fetch(url).then(data => data.json()),
       builder.get('symbol', {entry: '572845917ac74828a0d24f059cfe5460',}).promise(),
       builder.get('symbol', {entry: '98fc342dbb4f4e50a7a79b89f560d7ad',}).promise()
     ])
   
+    console.log('PDP ', pdp?.results[0])
   
     return({props:{
-      'pdp': pdp || null, 
+      'pdp': pdp && pdp?.results?.length ? pdp?.results[0] : null, 
       'header': header || null,
       'footer': footer || null
     }})
@@ -139,7 +152,7 @@ function HeadlessProduct({pdp, header, footer } : any) {
       }));
   
     return {
-      paths,
+      paths: [],
       fallback: 'blocking' as const,
     };
   };
