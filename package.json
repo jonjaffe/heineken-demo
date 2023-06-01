@@ -44,8 +44,11 @@
     ]
   },
   "dependencies": {
+    "@builder.io/personalization-context-menu": "^0.0.3",
+    "@builder.io/personalization-utils": "^2.0.0",
     "@builder.io/react": "^2.1.0",
     "@builder.io/widgets": "^1.2.23",
+    "@szhsin/react-menu": "^2.1.0",
     "next": "^12.2.2",
     "next-seo": "^5.4.0",
     "react": "^18.2.0",

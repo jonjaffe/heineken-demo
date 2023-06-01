@@ -3,15 +3,18 @@ import { useRouter } from 'next/router'
 import { BuilderComponent, builder, useIsPreviewing } from '@builder.io/react'
 import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
+import { parsePersonalizedURL } from '@builder.io/personalization-utils/next'
 import builderConfig from '@config/builder'
 // loading widgets dynamically to reduce bundle size, will only be included in bundle when is used in the content
 import '@builder.io/widgets/dist/lib/builder-widgets-async'
+import { useEffect } from 'react'
 
 builder.init(builderConfig.apiKey)
 
 export async function getStaticProps({
   params,
 }: GetStaticPropsContext<{ page: string[] }>) {
+  const { attributes } = parsePersonalizedURL(params!.page || []);
   const page =
     (await builder
       .get('page', {
@@ -24,6 +27,7 @@ export async function getStaticProps({
   return {
     props: {
       page,
+      attributes,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
@@ -46,10 +50,15 @@ export async function getStaticPaths() {
 
 export default function Page({
   page,
+  attributes
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
   const isPreviewingInBuilder = useIsPreviewing()
   const show404 = !page && !isPreviewingInBuilder
+
+  useEffect(() => {
+    builder.setUserAttributes(attributes!)
+  }, [])
 
   if (router.isFallback) {
     return <h1>Loading...</h1>
