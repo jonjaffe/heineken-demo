@@ -10,6 +10,9 @@ import '@builder.io/widgets/dist/lib/builder-widgets-async'
 import { useEffect } from 'react'
 
 builder.init(builderConfig.apiKey)
+import '../builder-imports'
+
+// builder.init(builderConfig.apiKey)
 
 export async function getStaticProps({
   params,
