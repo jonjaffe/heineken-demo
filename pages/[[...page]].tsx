@@ -13,9 +13,8 @@ builder.init(builderConfig.apiKey)
 import '../builder-imports'
 
 // builder.init(builderConfig.apiKey)
-
 export async function getStaticProps({
-  params,
+params,
 }: GetStaticPropsContext<{ page: string[] }>) {
   const { attributes } = parsePersonalizedURL(params!.page || []);
   const page =
