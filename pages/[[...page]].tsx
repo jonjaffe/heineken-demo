@@ -5,6 +5,7 @@ import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
 import { parsePersonalizedURL } from '@builder.io/personalization-utils/next'
 import builderConfig from '@config/builder'
+import Cookies from 'js-cookie'
 // loading widgets dynamically to reduce bundle size, will only be included in bundle when is used in the content
 import '@builder.io/widgets/dist/lib/builder-widgets-async'
 import { useEffect } from 'react'
@@ -16,12 +17,13 @@ import '../builder-imports'
 export async function getStaticProps({
 params,
 }: GetStaticPropsContext<{ page: string[] }>) {
-  const { attributes } = parsePersonalizedURL(params!.page || []);
+  const { attributes } = parsePersonalizedURL(params!.page || [])
   const page =
     (await builder
       .get('page', {
         userAttributes: {
           urlPath: '/' + (params?.page?.join('/') || ''),
+          ...attributes
         },
       })
       .toPromise()) || null
