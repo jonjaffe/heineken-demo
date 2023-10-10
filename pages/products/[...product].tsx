@@ -23,7 +23,6 @@ function Product({pdp, header, footer } : any) {
                     key={pdp?.id}
                     modelName="product-page"
                     content={pdp}
-                     locale="Default"
                   >
                     { (data, loading) => {
                         if (loading) {
