@@ -16,11 +16,14 @@ function Product({pdp, header, footer } : any) {
                   <BuilderComponent
                     name="symbol"
                     content={header}
+                     locale="Default"
+                     
                   />
                   <BuilderContent
                     key={pdp?.id}
                     modelName="product-page"
                     content={pdp}
+                     locale="Default"
                   >
                     { (data, loading) => {
                         if (loading) {
@@ -87,6 +90,7 @@ function Product({pdp, header, footer } : any) {
                   <BuilderComponent
                     name="symbol"
                     content={footer}
+                  locale="Default"
                   />
                   </>
                 ) : (
