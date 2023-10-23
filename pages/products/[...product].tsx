@@ -89,7 +89,7 @@ function Product({pdp, header, footer } : any) {
                   <BuilderComponent
                     name="symbol"
                     content={footer}
-                  locale="Default"
+                    locale="Default"
                   />
                   </>
                 ) : (
@@ -108,7 +108,7 @@ function Product({pdp, header, footer } : any) {
 
     const [pdp, header, footer] = await Promise.all([
       builder.get('product-page', {userAttributes: { ...targeting, urlPath: path }}).promise(),
-      builder.get('symbol', {entry: '572845917ac74828a0d24f059cfe5460',}).promise(),
+      builder.get('symbol', {entry: '572845917ac74828a0d24f059cfe5460', userAttributes: {locale: 'Default'}, options: {locale: 'Default'}}).promise(),
       builder.get('symbol', {entry: '98fc342dbb4f4e50a7a79b89f560d7ad',}).promise()
     ])
   
